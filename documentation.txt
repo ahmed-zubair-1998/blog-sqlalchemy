@@ -23,3 +23,5 @@ User can register, login and logout.
 Index page shows all the posts and comments on them including who created the post or comment and when.
 User has to be logged in to create a new post or comment on an existing post.
 User who has created the post can also edit or delete the post.
+Users can flag a comment but only once.
+Number of flags is shown infront of the comment.

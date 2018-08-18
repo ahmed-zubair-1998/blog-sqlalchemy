@@ -31,7 +31,11 @@
                 by {{ comment.User['username'] }} 
                 on {{ comment.Comment['created'].strftime('%I:%M %p %Y-%m-%d') }}
               </div>
-              <p class="body">{{ comment.Comment.body }}</p>
+              <p class="body">
+                {{ comment.Comment.body }}
+              </p>
+              {{ comment.Comment.flags }} 
+              <a class="action" href="{{ url_for('blog.flag_comment', id=comment.Comment.id) }}">Flag</a>
               <hr>
             {% endif %}
           {% endfor %}

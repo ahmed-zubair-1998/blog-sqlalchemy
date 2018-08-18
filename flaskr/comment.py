@@ -16,6 +16,7 @@ class Comment(Base):
     author = relationship("User", backref='commnets')
     post_id = Column(Integer, ForeignKey('posts.id'))
     post = relationship("Post", backref='comment_id')
+    flags = Column(Integer, default=0)
 
     def __init__(self, body, author, post):
         self.body = body

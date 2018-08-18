@@ -8,6 +8,7 @@ from flaskr.db import get_session
 from .post import Post
 from .user import User
 from .comment import Comment
+from .flagged_comments import FlaggedComment
 
 bp = Blueprint('blog', __name__)
 
@@ -116,3 +117,19 @@ def comment(id):
             return redirect(url_for('blog.index'))
 
     return render_template('blog/comment.html')
+
+@bp.route('/<int:id>/', methods=('GET', ))
+@login_required
+def flag_comment(id):
+    user_id = g.user.id
+    db = get_session()
+    if db.query(FlaggedComment).filter(FlaggedComment.user_id == user_id)\
+        .filter(FlaggedComment.comment_id == id).first() is None :
+
+        comment = db.query(Comment).filter(Comment.id == id).first()
+        comment.flags += 1
+        flagged_comment = FlaggedComment(user_id, id)
+        db.add(flagged_comment)
+        db.commit()
+        db.close()
+    return redirect(url_for('blog.index'))
