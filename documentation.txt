@@ -3,7 +3,9 @@ A simple blog app written in Flask using Sqlalchemy as ORM.
 It has user authentications. A user can create a post, edit or delete his previous posts and comment on posts.
 Usage: 
 Clone the project and move to current working directory.
-Install flask and docker.
+Install flask, pipenv and docker.
+Install two packages: sqlalchemy and psycopg2 by following command:
+	pipenv install sqlalchemy psycopg2
 Create a dockerized PostgreSQL instance using following command:
 	# create a PostgreSQL instance
 	docker run --name sqlalchemy-orm-psql \
