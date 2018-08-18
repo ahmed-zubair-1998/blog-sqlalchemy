@@ -1,0 +1,23 @@
+Blog: 
+A simple blog app written in Flask using Sqlalchemy as ORM.
+It has user authentications. A user can create a post, edit or delete his previous posts and comment on posts.
+Usage: 
+Clone the project and move to current working directory.
+Install flask and docker.
+Create a dockerized PostgreSQL instance using following command:
+	# create a PostgreSQL instance
+	docker run --name sqlalchemy-orm-psql \
+	    -e POSTGRES_PASSWORD=pass \
+	    -e POSTGRES_USER=usr \
+	    -e POSTGRES_DB=sqlalchemy \
+	    -p 5432:5432 \
+	    -d postgres
+run the following commands:
+	export FLASK_APP=flaskr
+	export FLASK_ENV=development
+	flask run
+Design:
+User can register, login and logout.
+Index page shows all the posts and comments on them including who created the post or comment and when.
+User has to be logged in to create a new post or comment on an existing post.
+User who has created the post can also edit or delete the post.
