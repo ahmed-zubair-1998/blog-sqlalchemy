@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Posts{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if posts %}
+    {% for post in posts %}
+      <article class="post">
+        <header>
+          <div>
+            <h1>{{ post.Post['title'] }}</h1>
+            <div class="about">by {{ post.User['username'] }} on {{ post.Post['created'].strftime('%I:%M %p %Y-%m-%d') }}</div>
+          </div>
+          <a class="action" href="{{ url_for('blog.comment', id=post.Post['id']) }}">Comment</a>
+          {% if g.user['id'] == post.Post['author_id'] %}
+            <a class="action" href="{{ url_for('blog.update', id=post.Post['id']) }}">Edit</a>
+          {% endif %}
+        </header>
+        <p class="body">{{ post.Post['body'] }}</p>
+        <hr>
+        <div class="comment">
+          <h4>Comments</h4>
+          {% for comment in comments %}
+            {% if comment.Comment.post_id == post.Post.id %}
+              <div class="about">
+                by {{ comment.User['username'] }} 
+                on {{ comment.Comment['created'].strftime('%I:%M %p %Y-%m-%d') }}
+              </div>
+              <p class="body">{{ comment.Comment.body }}</p>
+              <hr>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </article>
+      {% if not loop.last %}
+      {% endif %}
+        <br><hr>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
