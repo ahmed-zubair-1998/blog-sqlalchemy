@@ -34,7 +34,11 @@
               <p class="body">
                 {{ comment.Comment.body }}
               </p>
-              {{ comment.Comment.flags }} 
+              {% for flags in flagged_comments %}
+                {% if flags[0] == comment.Comment.id %}
+                  <span>{{ flags[1] }}</span>
+                {% endif %}
+              {% endfor %}
               <a class="action" href="{{ url_for('blog.flag_comment', id=comment.Comment.id) }}">Flag</a>
               <hr>
             {% endif %}

@@ -11,6 +11,7 @@ class FlaggedComment(Base):
     __tablename__ = 'flagged_comments'
     user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
     comment_id = Column(Integer, ForeignKey('comments.id'), primary_key=True)
+    comment = relationship("Comment", backref='flags')
     def __init__(self, user, comment):
         self.user_id = user
         self.comment_id = comment

@@ -2,6 +2,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
 from werkzeug.exceptions import abort
+from sqlalchemy import func
 
 from flaskr.auth import login_required
 from flaskr.db import get_session
@@ -21,7 +22,11 @@ def index():
     comments = db.query(Comment, User)\
     .join(User)\
     .all()
-    return render_template('blog/index.html', posts=posts, comments=comments)
+    flagged_comments = db.query(FlaggedComment.comment_id, func.count(FlaggedComment.comment_id))\
+        .group_by(FlaggedComment.comment_id).all()
+    return render_template(
+        'blog/index.html', posts=posts, comments=comments, flagged_comments = flagged_comments
+        )
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
@@ -126,8 +131,6 @@ def flag_comment(id):
     if db.query(FlaggedComment).filter(FlaggedComment.user_id == user_id)\
         .filter(FlaggedComment.comment_id == id).first() is None :
 
-        comment = db.query(Comment).filter(Comment.id == id).first()
-        comment.flags += 1
         flagged_comment = FlaggedComment(user_id, id)
         db.add(flagged_comment)
         db.commit()
